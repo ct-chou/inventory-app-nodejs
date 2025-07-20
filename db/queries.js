@@ -77,9 +77,10 @@ async function addProduct(product) {
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING product_id
     `;
-    
-    const values = [product.name, product.description, product.volume_ml, product.price, product.in_stock, product.category];
+
+    const values = [product.name, product.description, product.volume_ml, product.price, product.in_stock === 'true' || product.in_stock === true, product.category];
     const result = await pool.query(query, values);
+    console.log('Product added:', result.rows[0]);
     return result.rows[0].product_id;
   } catch (error) {
     console.error('Error adding product:', error);
@@ -111,6 +112,4 @@ module.exports = {
   getAllProducts,
   getAllProductsWithInventory,
   getProductById,
-  addProduct,
-  addInventory,
 };

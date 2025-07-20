@@ -37,6 +37,10 @@ const validateProduct = [
 
 async function getAllInventoryItems(req, res) {
     try {
+        res.setHeader('Cache-Control', 'no-store, max-age=0');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+
         const items = await db.getAllProductsWithInventory();
         console.log('Inventory Items:', items);
         res.render('index', {
