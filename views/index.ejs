@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <title>Inventory App</title>
+    </head>
+    <body>
+        <h1>Inventory Items</h1>
+        <ul>
+            <% items.forEach(item => { %>
+                <li>
+                    <a href ="/item/<%= item.product_id %>">
+                      <%= item.name %> <%= item.volume_ml %>ml 
+                    </a>
+                    <%= item.quantity %> units - $<%= item.price %> </li>
+            <% }); %>
+        </ul>
+    </body>
+</html>

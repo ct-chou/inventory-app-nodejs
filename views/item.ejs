@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Item Details</title>
+        <meta charset="UTF-8">
+        <style>
+            body { font-family: Arial, sans-serif; margin: 2em; }
+            .item-details { max-width: 500px; margin: auto; border: 1px solid #ccc; padding: 2em; border-radius: 8px; }
+            .item-details h2 { margin-top: 0; }
+            .item-details dt { font-weight: bold; }
+            .item-details dd { margin: 0 0 1em 0; }
+        </style>
+    </head>
+    <body>
+        <div class="item-details">
+            <h2><%= item.name %> <%= item.volume_ml %>ml</h2>
+            <dl>
+                <dt>Description:</dt>
+                <dd><%= item.description %></dd>
+
+                <dt>Category:</dt>
+                <dd><%= item.category %></dd>
+
+                <dt>Price:</dt>
+                <dd>$<%= item.price %></dd>
+
+                <dt>Stock:</dt>
+                <dd><%= item.quantity %></dd>
+
+                <dt>Last Updated:</dt>
+                <dd><%= item.last_updated %></dd>
+            </dl>
+            <a href="/">Back to Items List</a>
+        </div>
+    </body>
+</html>
