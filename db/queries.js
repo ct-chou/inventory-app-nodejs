@@ -70,9 +70,47 @@ async function getProductById(productId) {
   }
 }
 
+async function addProduct(product) {
+  try {
+    const query = `
+      INSERT INTO products (name, description, volume_ml, price, in_stock, category)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING product_id
+    `;
+    
+    const values = [product.name, product.description, product.volume_ml, product.price, product.in_stock, product.category];
+    const result = await pool.query(query, values);
+    return result.rows[0].product_id;
+  } catch (error) {
+    console.error('Error adding product:', error);
+    throw error;
+  }
+}
+
+async function addInventory(productId, quantity) {
+  try {
+    const query = `
+      INSERT INTO inventory (product_id, quantity)
+      VALUES ($1, $2)
+      ON CONFLICT (product_id)
+      DO UPDATE SET quantity = inventory.quantity + $2, last_updated = NOW()
+    `;
+    const values = [productId, quantity];
+    await pool.query(query, values);
+  } catch (error) {
+    console.error('Error adding inventory item:', error);
+    throw error;
+  }
+}
+
+
 
 module.exports = {
+   addProduct,
+   addInventory,
   getAllProducts,
   getAllProductsWithInventory,
   getProductById,
+  addProduct,
+  addInventory,
 };
