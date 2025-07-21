@@ -142,6 +142,35 @@ async function updateInventory(productId, quantity) {
   }
 } 
 
+async function searchByName(name) {
+  try {
+    const query = `
+      SELECT 
+        p.product_id, 
+        p.name, 
+        p.description, 
+        p.volume_ml, 
+        p.price, 
+        p.in_stock, 
+        p.category, 
+        i.quantity, 
+        i.last_updated
+      FROM 
+        products p
+      JOIN 
+        inventory i ON p.product_id = i.product_id
+      WHERE 
+        LOWER(p.name) LIKE LOWER($1)
+      ORDER BY 
+        p.name
+    `;
+    const result = await pool.query(query, [`%${name}%`]);
+    return result.rows;
+  } catch (error) {
+    console.error('Error searching products by name:', error);
+    throw error;
+  }
+}
 
 
 module.exports = {
@@ -153,4 +182,5 @@ module.exports = {
   getProductById,
   updateProduct,
   updateInventory,
+  searchByName,
 };

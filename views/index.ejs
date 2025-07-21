@@ -4,6 +4,10 @@
     </head>
     <body>
         <h1>Inventory Items (total: <%= items.length %>)</h1>
+        <%- include('partials/searchbar') %>
+        <% if (searchTerm) { %>
+            <p>Search Results for: <%= searchTerm %></p>
+        <% } %>
         <ul>
             <% items.forEach(item => { %>
                 <li>

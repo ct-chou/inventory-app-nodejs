@@ -9,5 +9,6 @@ inventoryRouter.get('/add', inventoryController.addItemForm);
 inventoryRouter.post('/add', inventoryController.validateProduct, inventoryController.addItem);
 inventoryRouter.get('/item/:id/edit', inventoryController.getItemEditForm);
 inventoryRouter.post('/item/:id/edit', inventoryController.validateProduct, inventoryController.updateItem);
+inventoryRouter.get('/search', inventoryController.getSearchResults); // Assuming search functionality is handled in the same controller
 
 module.exports = inventoryRouter;

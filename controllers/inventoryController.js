@@ -45,16 +45,30 @@ async function deleteItem(req, res) {
     }
 }   
 
+async function getSearchResults(req, res) {
+    const searchTerm = req.query.name;
+    console.log('Search Term:', searchTerm);
+    try {
+        const items = await db.searchByName(searchTerm);
+        console.log('Search Results:', items);
+        res.render('index', {
+            title: 'Search Results',
+            items: items,
+            searchTerm: searchTerm
+        });
+    } catch (error) {
+        console.error('Error fetching search results:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
 async function getAllInventoryItems(req, res) {
     try {
-        res.setHeader('Cache-Control', 'no-store, max-age=0');
-        res.setHeader('Pragma', 'no-cache');
-        res.setHeader('Expires', '0');
-
         const items = await db.getAllProductsWithInventory();
         console.log('Inventory Items:', items);
         res.render('index', {
             title: 'Inventory List',
+            searchTerm:'',
             items: items
         });
     } catch (error) {
@@ -155,5 +169,6 @@ module.exports = {
     addItem,
     getItemEditForm,
     updateItem,
+    getSearchResults,
     validateProduct  // Export the validation middleware
 };
