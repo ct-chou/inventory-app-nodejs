@@ -10,6 +10,15 @@ async function getAllProducts() {
   }
 }
 
+async function deleteProduct(productId) {
+  try {
+    const query = 'DELETE FROM products WHERE product_id = $1';
+    await pool.query(query, [productId]);
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    throw error;
+  }
+}
 
 async function getAllProductsWithInventory() {
   try {
@@ -104,11 +113,10 @@ async function addInventory(productId, quantity) {
   }
 }
 
-
-
 module.exports = {
    addProduct,
    addInventory,
+  deleteProduct,
   getAllProducts,
   getAllProductsWithInventory,
   getProductById,

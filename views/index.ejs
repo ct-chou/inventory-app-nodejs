@@ -8,9 +8,18 @@
             <% items.forEach(item => { %>
                 <li>
                     <a href ="/item/<%= item.product_id %>">
-                      <%= item.name %> <%= item.volume_ml %>ml 
+                      <%= item.name %> <%= item.volume_ml %>ml
                     </a>
-                    <%= item.quantity %> units - $<%= item.price %> </li>
+                     - <%= item.quantity %> units - $<%= item.price %> 
+                    <form action="/item/<%= item.product_id %>/delete" method="POST" onsubmit="return confirmDelete('<%= item.name %>')" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                    <script>
+                        function confirmDelete(itemName) {
+                            return confirm('Are you sure you want to delete "' + itemName + '"? This action cannot be undone.');
+                        }
+                    </script>
+                </li>
             <% }); %>
         </ul>
     </body>

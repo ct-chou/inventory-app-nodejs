@@ -34,6 +34,16 @@ const validateProduct = [
         .toInt()   
 ];
 
+async function deleteItem(req, res) {
+    const itemId = req.params.id;
+    try {
+        await db.deleteProduct(itemId);
+        res.redirect('/');
+    } catch (error) {
+        console.error('Error deleting item:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}   
 
 async function getAllInventoryItems(req, res) {
     try {
@@ -101,6 +111,7 @@ module.exports = {
     getAllInventoryItems,
     getItem,
     addItemForm,
+    deleteItem,
     addItem,
     validateProduct  // Export the validation middleware
 };
