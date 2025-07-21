@@ -113,6 +113,37 @@ async function addInventory(productId, quantity) {
   }
 }
 
+async function updateProduct(productId, product) {
+  try {
+    const query = `
+      UPDATE products
+      SET name = $1, description = $2, volume_ml = $3, price = $4, in_stock = $5, category = $6
+      WHERE product_id = $7
+    `;
+    const values = [product.name, product.description, product.volume_ml, product.price, product.in_stock === 'true' || product.in_stock === true, product.category, productId];
+    await pool.query(query, values);
+  } catch (error) {
+    console.error('Error updating product:', error);
+    throw error;
+  }
+}
+
+async function updateInventory(productId, quantity) {
+  try {
+    const query = `
+      UPDATE inventory
+      SET quantity = $1, last_updated = NOW()
+      WHERE product_id = $2
+    `;
+    await pool.query(query, [quantity, productId]);
+  } catch (error) {
+    console.error('Error updating inventory:', error);
+    throw error;
+  }
+} 
+
+
+
 module.exports = {
    addProduct,
    addInventory,
@@ -120,4 +151,6 @@ module.exports = {
   getAllProducts,
   getAllProductsWithInventory,
   getProductById,
+  updateProduct,
+  updateInventory,
 };

@@ -7,5 +7,7 @@ inventoryRouter.get('/item/:id', inventoryController.getItem);
 inventoryRouter.post('/item/:id/delete', inventoryController.deleteItem);
 inventoryRouter.get('/add', inventoryController.addItemForm);
 inventoryRouter.post('/add', inventoryController.validateProduct, inventoryController.addItem);
+inventoryRouter.get('/item/:id/edit', inventoryController.getItemEditForm);
+inventoryRouter.post('/item/:id/edit', inventoryController.validateProduct, inventoryController.updateItem);
 
 module.exports = inventoryRouter;

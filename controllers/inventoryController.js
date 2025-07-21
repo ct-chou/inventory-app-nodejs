@@ -86,6 +86,24 @@ async function addItemForm(req, res) {
     });
 }
 
+async function getItemEditForm(req, res) {
+    const itemId = req.params.id;
+    try {
+        const item = await db.getProductById(itemId);
+        if (!item) {
+            return res.status(404).send('Item not found');
+        }
+        res.render('edit-form', {
+            title: `Edit ${item.name}`,
+            itemId: itemId,
+            item: item
+        });
+    } catch (error) {
+        console.error('Error fetching item for edit:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
 async function addItem(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -107,11 +125,35 @@ async function addItem(req, res) {
     }
 }
 
+async function updateItem(req, res) {
+    const itemId = req.params.id;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).render('edit-form', {
+            title: 'Edit Product',
+            errors: errors.array(),
+            item: req.body
+        });
+    }
+
+    const { name, description, volume_ml, price, in_stock, category, quantity } = req.body;
+    try {
+        await db.updateProduct(itemId, { name, description, volume_ml, price, in_stock, category });
+        await db.updateInventory(itemId, quantity);
+        res.redirect(`/item/${itemId}`);
+    } catch (error) {
+        console.error('Error updating item:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
 module.exports = {
     getAllInventoryItems,
     getItem,
     addItemForm,
     deleteItem,
     addItem,
+    getItemEditForm,
+    updateItem,
     validateProduct  // Export the validation middleware
 };

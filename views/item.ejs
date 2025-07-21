@@ -32,6 +32,18 @@
                 <dt>Last Updated:</dt>
                 <dd><%= item.last_updated %></dd>
             </dl>
+            <form action="/item/<%= item.product_id %>/delete" method="POST" onsubmit="return confirmDelete()" style="display:inline;">
+                <button type="submit">Delete Item</button>
+            </form>
+            <script>
+                function confirmDelete() {
+                    return confirm('Are you sure you want to delete "<%= item.name %>"? This action cannot be undone.');
+                }
+            </script>
+            <br><br>
+            <a href="/item/<%= item.product_id %>/edit">Edit Item</a>
+            <br>
+            <br>
             <a href="/">Back to Items List</a>
         </div>
     </body>
